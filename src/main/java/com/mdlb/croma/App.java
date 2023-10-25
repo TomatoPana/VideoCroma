@@ -2,14 +2,7 @@ package com.mdlb.croma;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 
@@ -18,21 +11,9 @@ import org.bytedeco.javacv.FFmpegFrameRecorder;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.Java2DFrameConverter;
 
-/**
- * JavaFX App
- */
-public class App extends Application {
+import com.mdlb.croma.frontend.MainWindow;
 
-    @Override
-    public void start(Stage stage) {
-        var javaVersion = SystemInfo.javaVersion();
-        var javafxVersion = SystemInfo.javafxVersion();
-
-        var label = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-        var scene = new Scene(new StackPane(label), 640, 480);
-        stage.setScene(scene);
-        stage.show();
-    }
+public class App {
 
     private void createVideoFromFrames() throws Exception {
         // Set up the recorder
@@ -97,7 +78,7 @@ public class App extends Application {
         recorder.close();
     }
 
-    public static void main(String[] args) throws FFmpegFrameGrabber.Exception, IOException {
+    private void extractFramesFromOriginalSource() throws Exception {
         ArrayList<BufferedImage> frames = new ArrayList<BufferedImage>();
         File videoFile = new File("src/main/java/com/mdlb/croma/input/video.webm");
 
@@ -133,8 +114,10 @@ public class App extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-        launch();
+    public static void main(String[] args) {
+        MainWindow.launch(MainWindow.class, args);
     }
 
 }
